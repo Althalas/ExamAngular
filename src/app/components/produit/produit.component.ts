@@ -1,39 +1,70 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ProduitsService } from '../../services/produits.service';
+import { Component, OnInit } from '@angular/core';
+import { ProduitsService, Produit } from '../../services/produits.service';
 import { PanierService } from '../../services/panier.service';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from '../loader/loader.component';
+import { SearchComponent } from '../search/search.component';
 import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-produit',
   standalone: true,
-  imports: [CommonModule, LoaderComponent],
+  imports: [CommonModule, LoaderComponent, SearchComponent],
   templateUrl: './produit.component.html',
-  styleUrl: './produit.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './produit.component.scss'
 })
 export class ProduitComponent implements OnInit {
-  produits: any[] = [];
+  produits: Produit[] = [];
   isLoading = true;
+  currentSearchTerm = '';
   
   private produitsService = inject(ProduitsService);
   public panierService = inject(PanierService);
 
   ngOnInit() {
     this.produitsService.getAll().subscribe({
-      next: (data) => {
+      next: (data: Produit[]) => {
         this.produits = data;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Erreur lors du chargement des produits:', error);
         this.isLoading = false;
       }
     });
   }
 
-  ajouterAuPanier(produit: any): void {
+  // Méthode pour filtrer les produits en fonction du terme de recherche
+  get filteredProduits(): Produit[] {
+    if (!this.currentSearchTerm.trim()) {
+      return this.produits;
+    }
+    
+    const searchTerm = this.currentSearchTerm.toLowerCase().trim();
+    return this.produits.filter(produit => 
+      produit.title.toLowerCase().includes(searchTerm) ||
+      produit.description.toLowerCase().includes(searchTerm) ||
+      produit.category?.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  // Méthode pour obtenir les produits en promotion
+  get produitsEnPromotion(): Produit[] {
+    return this.filteredProduits.filter(produit => produit.discountPercent > 0);
+  }
+
+  // Méthode pour obtenir les produits normaux (non en promotion)
+  get produitsNormaux(): Produit[] {
+    return this.filteredProduits.filter(produit => produit.discountPercent === 0);
+  }
+
+  // Méthode pour gérer la soumission de la recherche (seulement quand on clique sur le bouton)
+  onSearchSubmitted(searchTerm: string): void {
+    this.currentSearchTerm = searchTerm;
+    console.log('Recherche soumise:', searchTerm);
+  }
+
+  ajouterAuPanier(produit: Produit): void {
     this.panierService.ajouterProduit(produit);
   }
 

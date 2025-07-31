@@ -1,14 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
+import { Produit } from './produits.service';
 
-export interface ProduitPanier {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  fullPrice: number;
-  discountPercent: number;
-  category: string;
-  features: any[];
+export interface ProduitPanier extends Produit {
   quantite: number;
 }
 
@@ -62,7 +55,7 @@ export class PanierService {
   }
 
   // Ajouter un produit au panier
-  ajouterProduit(produit: any): void {
+  ajouterProduit(produit: Produit): void {
     const panierActuel = this.panierSignal();
     const produitExistant = panierActuel.find(item => item.id === produit.id);
     

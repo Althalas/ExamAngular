@@ -1,1 +1,29 @@
-<p>search works!</p>
+<div class="search-container">
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmitSearch()" class="search-form">
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+      <input 
+        type="text" 
+        class="form-control" 
+        [placeholder]="placeholder()"
+        formControlName="searchInput"
+        autocomplete="off">
+      @if (showClearButton() && searchForm.get('searchInput')?.value) {
+        <button 
+          class="btn btn-outline-secondary" 
+          type="button"
+          (click)="clearSearch()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      }
+      <button 
+        class="btn btn-primary" 
+        type="submit"
+        [disabled]="!searchForm.get('searchInput')?.value">
+        Rechercher
+      </button>
+    </div>
+  </form>
+</div>

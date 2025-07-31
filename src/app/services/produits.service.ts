@@ -1,6 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+export interface Produit {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  fullPrice: number;
+  discountPercent: number;
+  category: string;
+  features: Array<{
+    title: string;
+    description: string;
+    icon: string;
+  }>;
+}
+
 @Injectable({
   providedIn: 'root'
 })

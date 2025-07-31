@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProduitsService } from '../../services/produits.service';
+import { PanierService } from '../../services/panier.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { RouterModule } from '@angular/router';
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-accueil',
@@ -14,7 +16,9 @@ import { RouterModule } from '@angular/router';
 export class AccueilComponent implements OnInit {
   produitsPromo: any[] = [];
   isLoading = true;
-  constructor(private produitsService: ProduitsService) {}
+  
+  private produitsService = inject(ProduitsService);
+  public panierService = inject(PanierService);
 
   ngOnInit() {
     this.produitsService.getAll().subscribe({
@@ -28,5 +32,21 @@ export class AccueilComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  ajouterAuPanier(produit: any): void {
+    this.panierService.ajouterProduit(produit);
+  }
+
+  estDansPanier(id: number): boolean {
+    return this.panierService.estDansPanier(id);
+  }
+
+  getQuantite(id: number): number {
+    return this.panierService.getQuantite(id);
+  }
+  isDarkMode = false;
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
   }
 }

@@ -1,13 +1,53 @@
-.navigateur-container {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    margin-top: auto;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+.navbar {
+  margin-bottom: 20px;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #fff !important;
+}
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+// Styles pour le bouton de mode sombre
+.btn.nav-link {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
   }
   
-  .navigateur-container p {
+  i {
+    transition: all 0.3s ease;
+  }
+}
+
+// Animation pour l'icône lors du changement de mode
+.bi-moon-fill,
+.bi-sun-fill {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: rotate(15deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    margin-top: 10px;
+  }
+  
+  .nav-item {
     margin: 5px 0;
   }
+}
   

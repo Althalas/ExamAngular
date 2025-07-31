@@ -1,2 +1,119 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Styles pour le mode sombre */
+body.dark-mode {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .navbar {
+  background-color: #2d2d2d !important;
+}
+
+body.dark-mode .navbar-brand,
+body.dark-mode .nav-link {
+  color: #ffffff !important;
+}
+
+body.dark-mode .nav-link:hover {
+  color: #ffc107 !important;
+}
+
+body.dark-mode .card {
+  background-color: #2d2d2d !important;
+  border-color: #404040 !important;
+}
+
+body.dark-mode .card-body {
+  color: #ffffff !important;
+}
+
+body.dark-mode .btn-outline-primary {
+  color: #ffffff !important;
+  border-color: #007bff !important;
+}
+
+body.dark-mode .btn-outline-primary:hover {
+  background-color: #007bff !important;
+  color: #ffffff !important;
+}
+
+/* Styles pour le texte muted en mode sombre */
+body.dark-mode .text-muted {
+  color: #adb5bd !important;
+}
+
+body.dark-mode .text-decoration-line-through.text-muted {
+  color: #6c757d !important;
+}
+
+/* Styles pour les badges en mode sombre */
+body.dark-mode .badge.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+body.dark-mode .badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Styles pour les boutons outline en mode sombre */
+body.dark-mode .btn-outline-secondary {
+  color: #adb5bd !important;
+  border-color: #6c757d !important;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #6c757d !important;
+  color: #ffffff !important;
+}
+
+/* Styles pour les alertes en mode sombre */
+body.dark-mode .alert-info {
+  background-color: #0c5460 !important;
+  border-color: #0c5460 !important;
+  color: #d1ecf1 !important;
+}
+
+/* Styles pour la page de présentation en mode sombre */
+body.dark-mode .presentation-container {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+}
+
+body.dark-mode .presentation-content {
+  background: rgba(45, 45, 45, 0.95) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .presentation-container h1 {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #4facfe, #00f2fe) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+body.dark-mode .presentation-text p {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .stats {
+  border-top-color: #404040 !important;
+}
+
+body.dark-mode .stat-item {
+  background: linear-gradient(135deg, #4facfe, #00f2fe) !important;
+}
+
+body.dark-mode .stat-item:hover {
+  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3) !important;
+}
+
+/* Transition douce pour le changement de mode */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

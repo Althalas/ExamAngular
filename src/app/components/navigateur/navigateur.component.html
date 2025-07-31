@@ -2,8 +2,7 @@
   <div class="container">
     <!-- Logo/Brand -->
     <a class="navbar-brand fw-bold" [routerLink]="['/']">
-      <i class="bi bi-shop me-2"></i>
-      MonEcommerce
+      Kclim
     </a>
 
     <!-- Toggle button for mobile -->
@@ -43,19 +42,24 @@
 
       <!-- Right side items -->
       <ul class="navbar-nav">
+        <!-- Bouton Mode Sombre -->
+        <li class="nav-item">
+          <button 
+            class="btn nav-link border-0 bg-transparent" 
+            (click)="toggleDarkMode()"
+            [ngClass]="{'text-warning': isDarkMode, 'text-light': !isDarkMode}"
+            title="Basculer le mode sombre">
+            <i class="bi" [ngClass]="{'bi-moon-fill': isDarkMode, 'bi-sun-fill': !isDarkMode}"></i>
+            <span class="ms-1 d-none d-md-inline">{{ isDarkMode ? 'Sombre' : 'Clair' }}</span>
+          </button>
+        </li>
         <li class="nav-item">
           <a class="nav-link position-relative" [routerLink]="['/panier']" routerLinkActive="active">
             <i class="bi bi-cart3 me-1"></i>
             Panier
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              0
+              {{ nombreArticles }}
             </span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/search']" routerLinkActive="active">
-            <i class="bi bi-search me-1"></i>
-            Recherche
           </a>
         </li>
       </ul>
