@@ -1,0 +1,122 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="mb-4">
+        <i class="bi bi-cart3 me-2"></i>
+        Mon Panier
+        @if (nombreArticles > 0) {
+          <span class="badge bg-primary ms-2">{{ nombreArticles }} article(s)</span>
+        }
+      </h1>
+    </div>
+  </div>
+
+  @if (panier.length === 0) {
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-info text-center" role="alert">
+          <i class="bi bi-cart-x fs-1 d-block mb-3"></i>
+          <h4>Votre panier est vide</h4>
+          <p class="mb-0">Ajoutez des produits depuis notre catalogue pour commencer vos achats.</p>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Produits dans votre panier</h5>
+          </div>
+          <div class="card-body p-0">
+            @for (produit of panier; track produit.id) {
+              <div class="border-bottom p-3">
+                <div class="row align-items-center">
+                  <div class="col-md-2">
+                    <img [src]="produit.image" 
+                         [alt]="produit.title" 
+                         class="img-fluid rounded" 
+                         style="max-height: 80px; object-fit: cover;">
+                  </div>
+                  <div class="col-md-4">
+                    <h6 class="mb-1">{{ produit.title }}</h6>
+                    <p class="text-muted small mb-0">{{ produit.description }}</p>
+                  </div>
+                  <div class="col-md-2 text-center">
+                    @if (produit.discountPercent > 0) {
+                      <div>
+                        <span class="text-muted text-decoration-line-through small d-block">
+                          {{ produit.fullPrice | currency:'EUR' }}
+                        </span>
+                        <strong class="text-danger">
+                          {{ calculerPrixProduit(produit) | currency:'EUR' }}
+                        </strong>
+                        <span class="badge bg-danger ms-1">-{{ produit.discountPercent * 100 }}%</span>
+                      </div>
+                    } @else {
+                      <strong class="text-primary">{{ produit.fullPrice | currency:'EUR' }}</strong>
+                    }
+                  </div>
+                  <div class="col-md-2">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <button class="btn btn-outline-secondary btn-sm" 
+                              (click)="modifierQuantite(produit.id, produit.quantite - 1)">
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <span class="badge bg-primary px-3">{{ produit.quantite }}</span>
+                      <button class="btn btn-outline-secondary btn-sm" 
+                              (click)="modifierQuantite(produit.id, produit.quantite + 1)">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-md-2 text-end">
+                    <strong class="text-primary">
+                      {{ (calculerPrixProduit(produit) * produit.quantite) | currency:'EUR' }}
+                    </strong>
+                  </div>
+                  <div class="col-md-12 mt-2">
+                    <button class="btn btn-outline-danger btn-sm" 
+                            (click)="supprimerProduit(produit.id)">
+                      <i class="bi bi-trash me-1"></i>
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Récapitulatif</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Nombre d'articles :</span>
+              <strong>{{ nombreArticles }}</strong>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="h5">Total :</span>
+              <strong class="h5 text-primary">{{ prixTotal | currency:'EUR' }}</strong>
+            </div>
+            <div class="d-grid gap-2">
+              <button class="btn btn-success">
+                <i class="bi bi-credit-card me-2"></i>
+                Procéder au paiement
+              </button>
+              <button class="btn btn-outline-secondary" (click)="viderPanier()">
+                <i class="bi bi-trash me-2"></i>
+                Vider le panier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

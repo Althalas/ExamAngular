@@ -1,0 +1,63 @@
+<div style="padding: 20px; background-color: #f0f0f0;">
+  <h1>Page d'Accueil</h1>
+  <p>Bienvenue sur notre site !</p>
+</div>
+<div class="container mt-4">
+  @if (isLoading) {
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
+      <app-loader></app-loader>
+    </div>
+  } @else {
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center mb-4">Produits en Promotion</h1>
+      <p class="text-center mb-5">Découvrez nos meilleures offres du moment !</p>
+    </div>
+  </div>
+  <div class="row">
+    @for (produit of produitsPromo; track produit.id) {
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="position-relative">
+            <img [src]="produit.image" 
+                 [alt]="produit.title" 
+                 class="card-img-top" 
+                 style="height: 200px; object-fit: cover;">
+            <div class="position-absolute top-0 start-0 m-2">
+              <span class="badge bg-danger fs-6">-{{ (produit.discountPercent * 100) }}%</span>
+            </div>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ produit.title }}</h5>
+            <p class="card-text flex-grow-1">{{ produit.description }}</p>
+            <div class="mt-auto">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="text-decoration-line-through text-muted me-2">
+                    {{ produit.fullPrice }}€
+                  </span>
+                  <span class="text-danger fw-bold fs-5">
+                    {{ (produit.fullPrice * (1 - produit.discountPercent)).toFixed(2) }}€
+                  </span>
+                </div>
+                <button class="btn btn-primary btn-sm">ajouter au panier</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  
+  @if (produitsPromo.length === 0) {
+    <div class="row">
+      <div class="col-12 text-center">
+        <div class="alert alert-info">
+          <h4>Aucune promotion disponible pour le moment</h4>
+          <p>Revenez plus tard pour découvrir nos offres spéciales !</p>
+        </div>
+      </div>
+    </div>
+  }
+}
+</div>
