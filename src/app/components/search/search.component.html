@@ -1,5 +1,5 @@
 <div class="search-container">
-  <form [formGroup]="searchForm" (ngSubmit)="onSubmitSearch()" class="search-form">
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmitSearch()" class="search-form"> <!-- formulaire de recherche -->
     <div class="input-group">
       <span class="input-group-text">
         <i class="bi bi-search"></i>
@@ -10,7 +10,7 @@
         [placeholder]="placeholder()"
         formControlName="searchInput"
         autocomplete="off">
-      @if (showClearButton() && searchForm.get('searchInput')?.value) {
+      @if (showClearButton() && searchForm.get('searchInput')?.value) { <!-- si le bouton de nettoyage est affiché -->
         <button 
           class="btn btn-outline-secondary" 
           type="button"
@@ -21,7 +21,7 @@
       <button 
         class="btn btn-primary" 
         type="submit"
-        [disabled]="!searchForm.get('searchInput')?.value">
+        [disabled]="!searchForm.get('searchInput')?.value"> <!-- bouton de recherche -->
         Rechercher
       </button>
     </div>

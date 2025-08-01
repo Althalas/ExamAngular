@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Produit } from './produits.service';
 
 export interface ProduitPanier extends Produit {
@@ -11,28 +11,26 @@ export interface ProduitPanier extends Produit {
 export class PanierService {
   private readonly STORAGE_KEY = 'panier';
   
-  // Signal pour le panier
-  private panierSignal = signal<ProduitPanier[]>(this.chargerPanier());
+  // Propriété privée pour stocker le panier
+  private _panier: ProduitPanier[] = this.chargerPanier();
   
-  // Signal computed pour le nombre total d'articles
-  nombreArticles = computed(() => {
-    return this.panierSignal().reduce((total, item) => total + item.quantite, 0);
-  });
+  // Getter pour accéder au panier
+  get panier(): ProduitPanier[] {
+    return this._panier;
+  }
   
-  // Signal computed pour le prix total
-  prixTotal = computed(() => {
-    return this.panierSignal().reduce((total, item) => {
+  // Méthode pour obtenir le nombre total d'articles
+  getNombreArticles(): number {
+    return this._panier.reduce((total, item) => total + item.quantite, 0);
+  }
+  
+  // Méthode pour obtenir le prix total
+  getPrixTotal(): number {
+    return this._panier.reduce((total, item) => {
       const prixReduit = item.fullPrice * (1 - item.discountPercent);
       return total + (prixReduit * item.quantite);
     }, 0);
-  });
-  
-  // Getter pour accéder au panier
-  get panier() {
-    return this.panierSignal();
   }
-
-  constructor() { }
 
   // Charger le panier depuis localStorage
   private chargerPanier(): ProduitPanier[] {
@@ -56,34 +54,31 @@ export class PanierService {
 
   // Ajouter un produit au panier
   ajouterProduit(produit: Produit): void {
-    const panierActuel = this.panierSignal();
-    const produitExistant = panierActuel.find(item => item.id === produit.id);
+    const produitExistant = this._panier.find(item => item.id === produit.id);
     
     if (produitExistant) {
       // Si le produit existe déjà, augmenter la quantité
-      const nouveauPanier = panierActuel.map(item => 
+      this._panier = this._panier.map(item => 
         item.id === produit.id 
           ? { ...item, quantite: item.quantite + 1 }
           : item
       );
-      this.panierSignal.set(nouveauPanier);
     } else {
       // Si le produit n'existe pas, l'ajouter avec une quantité de 1
       const nouveauProduit: ProduitPanier = {
         ...produit,
         quantite: 1
       };
-      this.panierSignal.set([...panierActuel, nouveauProduit]);
+      this._panier = [...this._panier, nouveauProduit];
     }
     
-    this.sauvegarderPanier(this.panierSignal());
+    this.sauvegarderPanier(this._panier);
   }
 
   // Supprimer un produit du panier
   supprimerProduit(id: number): void {
-    const nouveauPanier = this.panierSignal().filter(item => item.id !== id);
-    this.panierSignal.set(nouveauPanier);
-    this.sauvegarderPanier(nouveauPanier);
+    this._panier = this._panier.filter(item => item.id !== id);
+    this.sauvegarderPanier(this._panier);
   }
 
   // Modifier la quantité d'un produit
@@ -93,29 +88,28 @@ export class PanierService {
       return;
     }
     
-    const nouveauPanier = this.panierSignal().map(item => 
+    this._panier = this._panier.map(item => 
       item.id === id 
         ? { ...item, quantite: nouvelleQuantite }
         : item
     );
-    this.panierSignal.set(nouveauPanier);
-    this.sauvegarderPanier(nouveauPanier);
+    this.sauvegarderPanier(this._panier);
   }
 
   // Vider le panier
   viderPanier(): void {
-    this.panierSignal.set([]);
+    this._panier = [];
     this.sauvegarderPanier([]);
   }
 
   // Vérifier si un produit est dans le panier
   estDansPanier(id: number): boolean {
-    return this.panierSignal().some(item => item.id === id);
+    return this._panier.some(item => item.id === id);
   }
 
   // Obtenir la quantité d'un produit dans le panier
   getQuantite(id: number): number {
-    const produit = this.panierSignal().find(item => item.id === id);
+    const produit = this._panier.find(item => item.id === id);
     return produit ? produit.quantite : 0;
   }
 }

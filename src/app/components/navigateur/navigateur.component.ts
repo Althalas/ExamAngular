@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PanierService } from '../../services/panier.service';
-import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-navigateur',
@@ -12,14 +11,14 @@ import { inject } from '@angular/core';
   styleUrl: './navigateur.component.scss'
 })
 export class NavigateurComponent {
-  public panierService = inject(PanierService);
+  constructor(public panierService: PanierService) {}
   
   // Propriété pour le mode sombre
   public isDarkMode = false;
 
   // Getter pour le nombre d'articles dans le panier
   get nombreArticles() {
-    return this.panierService.nombreArticles();
+    return this.panierService.getNombreArticles();
   }
 
   // Méthode pour basculer le mode sombre

@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
   // Input pour recevoir des données du composant parent
   public placeholder = input<string>('Rechercher un produit...');
   public showClearButton = input<boolean>(true);
@@ -25,6 +25,16 @@ export class SearchComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.searchForm.valueChanges.subscribe(values => {
+       if (this.searchForm.valid) {
+      const searchValue = values.searchInput
+      if (searchValue && searchValue.trim()) {
+        this.searchSubmitted.emit(searchValue.trim());
+      }
+    }
+    } )
+  }
   // Méthode pour soumettre la recherche
   onSubmitSearch(): void {
     if (this.searchForm.valid) {
@@ -38,5 +48,6 @@ export class SearchComponent {
   // Méthode pour effacer la recherche
   clearSearch(): void {
     this.searchForm.patchValue({ searchInput: '' });
+    this.searchSubmitted.emit('');
   }
 }

@@ -4,7 +4,6 @@ import { ProduitsService } from '../../services/produits.service';
 import { PanierService } from '../../services/panier.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { RouterModule } from '@angular/router';
-import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-accueil',
@@ -17,8 +16,10 @@ export class AccueilComponent implements OnInit {
   produitsPromo: any[] = [];
   isLoading = true;
   
-  private produitsService = inject(ProduitsService);
-  public panierService = inject(PanierService);
+  constructor(
+    private produitsService: ProduitsService,
+    public panierService: PanierService
+  ) {}
 
   ngOnInit() {
     this.produitsService.getAll().subscribe({
@@ -34,19 +35,19 @@ export class AccueilComponent implements OnInit {
     });
   }
 
-  ajouterAuPanier(produit: any): void {
+  ajouterAuPanier(produit: any): void { // ajoute un produit au panier
     this.panierService.ajouterProduit(produit);
   }
 
-  estDansPanier(id: number): boolean {
+  estDansPanier(id: number): boolean { // vérifie si un produit est dans le panier
     return this.panierService.estDansPanier(id);
   }
 
-  getQuantite(id: number): number {
+  getQuantite(id: number): number { // retourne la quantité d'un produit dans le panier
     return this.panierService.getQuantite(id);
   }
   isDarkMode = false;
-  toggleDarkMode(): void {
+  toggleDarkMode(): void { // permet de basculer entre le mode sombre et le mode clair
     this.isDarkMode = !this.isDarkMode;
   }
 }

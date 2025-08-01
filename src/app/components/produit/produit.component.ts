@@ -4,7 +4,6 @@ import { PanierService } from '../../services/panier.service';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from '../loader/loader.component';
 import { SearchComponent } from '../search/search.component';
-import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-produit',
@@ -18,8 +17,10 @@ export class ProduitComponent implements OnInit {
   isLoading = true;
   currentSearchTerm = '';
   
-  private produitsService = inject(ProduitsService);
-  public panierService = inject(PanierService);
+  constructor(
+    private produitsService: ProduitsService,
+    public panierService: PanierService
+  ) {}
 
   ngOnInit() {
     this.produitsService.getAll().subscribe({

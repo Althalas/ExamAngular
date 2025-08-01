@@ -1,18 +1,16 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PanierService } from '../../services/panier.service';
-import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-panier',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './panier.component.html',
-  styleUrl: './panier.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './panier.component.scss'
 })
 export class PanierComponent {
-  public panierService = inject(PanierService);
+  constructor(public panierService: PanierService) {}
 
   // Getter pour accéder au panier
   get panier() {
@@ -21,12 +19,12 @@ export class PanierComponent {
 
   // Getter pour le nombre total d'articles
   get nombreArticles() {
-    return this.panierService.nombreArticles();
+    return this.panierService.getNombreArticles();
   }
 
   // Getter pour le prix total
   get prixTotal() {
-    return this.panierService.prixTotal();
+    return this.panierService.getPrixTotal();
   }
 
   // Méthodes pour gérer le panier

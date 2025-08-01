@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="row">
-    @for (produit of produitsPromo; track produit.id) {
+    @for (produit of produitsPromo; track produit.id) { <!-- boucle qui affiche les produits en promotion -->
       <div class="col-md-6 col-lg-4 mb-4">
         <div class="card h-100 shadow-sm border-0">
           <div class="position-relative">
@@ -24,7 +24,7 @@
                  class="card-img-top" 
                  style="height: 200px; object-fit: cover;">
             <div class="position-absolute top-0 start-0 m-2">
-              <span class="badge bg-danger fs-6">-{{ (produit.discountPercent * 100) }}%</span>
+              <span class="badge bg-danger fs-6">-{{ (produit.discountPercent * 100) }}%</span> <!-- affiche la promotion en pourcentage -->
             </div>
           </div>
           <div class="card-body d-flex flex-column">
@@ -34,10 +34,10 @@
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                   <span class="text-decoration-line-through text-muted me-2">
-                    {{ produit.fullPrice }}€
+                    {{ produit.fullPrice }}€ <!-- affiche le prix sans la promotion -->
                   </span>
                   <span class="text-danger fw-bold fs-5">
-                    {{ (produit.fullPrice * (1 - produit.discountPercent)).toFixed(2) }}€
+                    {{ (produit.fullPrice * (1 - produit.discountPercent)).toFixed(2) }}€ <!-- affiche le prix avec la promotion -->
                   </span>
                 </div>
               </div>
@@ -73,7 +73,7 @@
     }
   </div>
   
-  @if (produitsPromo.length === 0) {
+  @if (produitsPromo.length === 0) { <!-- si il n'y a pas de produits en promotion -->
     <div class="row">
       <div class="col-12 text-center">
         <div class="alert alert-info">
